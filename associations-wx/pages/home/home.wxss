@@ -1,0 +1,22 @@
+/* pages/home/home.wxss */
+.page__ft1{
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #aaaaaa;
+  background-color: #ededed;
+}
+.text {
+  /*固定宽度*/
+  width: 60%;
+  /*超出部分隐藏*/
+  overflow:hidden;
+  /*不换行*/
+  white-space:nowrap;
+  /*添加...*/
+  text-overflow:ellipsis;
+}
+
+.time{
+  font-size: 18px;
+}

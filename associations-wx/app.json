@@ -1,0 +1,47 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/login/login",
+    "pages/home/home",
+    "pages/ass/ass",
+    "pages/my/my",
+    "pages/activityDetail/activityDetail",
+    "pages/assDetail/assDetail",
+    "pages/assUser/assUser"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "enablePullDownRefresh": true,
+    "navigationBarBackgroundColor": "#EDEDED",
+    "navigationBarTitleText": "社团",
+    "navigationBarTextStyle":"black",
+    "backgroundColor": "#EDEDED"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#11cd6e",
+    "borderStyle": "white",
+    "list": [
+      {
+        "selectedIconPath": "image/home_selected.png",
+        "iconPath": "image/home.png",
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "selectedIconPath": "image/ass_selected.png",
+        "iconPath": "image/ass.png",
+        "pagePath": "pages/ass/ass",
+        "text": "社团"
+      },
+      {
+        "selectedIconPath": "image/user_selected.png",
+        "iconPath": "image/user.png",
+        "pagePath": "pages/my/my",
+        "text": "我的"
+      }
+    ]
+  }
+}

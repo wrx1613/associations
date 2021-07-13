@@ -1,0 +1,13 @@
+<view class="page"> 
+  <view class="page__bd" style="padding-bottom: 0px;">
+    <view class="weui-cells weui-cells_after-title" style="margin-top: 0px;">
+      <navigator url="../activityDetail/activityDetail?id={{item.id}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:for="{{list}}" wx:key="id">
+        <view class="weui-cell__bd text">{{item.name}}</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access time">{{item.startTime}}</view>
+      </navigator>
+    </view>
+  </view>
+  <view class="page__ft1" wx:if="{{isBottom}}">
+      已经到底了
+    </view>
+</view>

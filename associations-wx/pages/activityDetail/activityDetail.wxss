@@ -1,0 +1,8 @@
+/* pages/activityDetail/activityDetail.wxss */
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-right {
+  text-align: right;
+}

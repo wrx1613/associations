@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rui.sys.dao.RoleDao">
+
+    <resultMap id="roleResult" type="Role">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <collection property="menuList" ofType="Menu">
+            <id property="id" column="menuList.id" />
+        </collection>
+        <collection property="userList" ofType="User">
+            <id property="id" column="userList.id" />
+        </collection>
+    </resultMap>
+
+    <sql id="roleColumns">
+		a.id,
+		a.name
+	</sql>
+
+    <select id="get" resultMap="roleResult">
+        SELECT
+            rm.menu_id AS "menuList.id",
+            ru.user_id AS "userList.id",
+            <include refid="roleColumns"/>
+        FROM role a
+        LEFT JOIN role_menu rm ON rm.role_id = a.id
+        LEFT JOIN role_user ru ON ru.role_id = a.id
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="Role">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM role a
+        <if test="name != null and name != ''">
+            WHERE a.name like CONCAT('%', #{name}, '%')
+        </if>
+        LIMIT ${(page.pageNo - 1) * page.pageSize}, ${page.pageSize}
+    </select>
+
+    <select id="count"  resultType="java.lang.Integer">
+        SELECT count(*) FROM role a
+        <if test="name != null and name != ''">
+            WHERE a.name like CONCAT('%', #{name}, '%')
+        </if>
+    </select>
+
+    <select id="getByUserId" resultType="Role">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM role a
+        LEFT JOIN role_user ru ON ru.role_id = a.id
+        WHERE ru.user_id = #{userId}
+    </select>
+
+    <select id="findAllList" resultType="Role">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM role a
+    </select>
+
+    <insert id="insert">
+		INSERT INTO role(
+			id,
+			name
+		) VALUES (
+			#{id},
+			#{name}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE role SET
+			name = #{name}
+		WHERE id = #{id}
+	</update>
+
+    <insert id="auth">
+        DELETE FROM role_menu
+        WHERE role_id = #{roleId};
+        <foreach collection="menuIds" index="index" item="menuId" separator=";">
+            INSERT INTO role_menu(
+                role_id,
+                menu_id
+            ) VALUES (
+                #{roleId},
+                #{menuId}
+            )
+        </foreach>
+	</insert>
+
+    <insert id="assignRole">
+        DELETE FROM role_user
+        WHERE role_id = #{roleId};
+        <foreach collection="userIds" index="index" item="userId" separator=";">
+            INSERT INTO role_user(
+                role_id,
+                user_id
+            ) VALUES (
+                #{roleId},
+                #{userId}
+            )
+        </foreach>
+	</insert>
+
+    <insert id="addUser">
+        INSERT INTO role_user(
+            role_id,
+            user_id
+        ) VALUES (
+            '1',
+            #{userId}
+        )
+	</insert>
+
+    <update id="delete">
+        DELETE FROM role
+        WHERE id = #{id}
+    </update>
+</mapper>

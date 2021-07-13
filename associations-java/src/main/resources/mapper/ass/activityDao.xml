@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rui.ass.dao.ActivityDao">
+
+    <sql id="activityColumns">
+		a.id,
+		a.name,
+		a.ass_id AS "ass.id",
+		a.content,
+		a.start_time,
+		a.status,
+		ass.name As "ass.name"
+	</sql>
+
+	<sql id="activityJoins">
+		LEFT JOIN ass ass ON ass.id = a.ass_id
+    </sql>
+
+    <select id="get" resultType="Activity">
+        SELECT
+        <include refid="activityColumns"/>
+        FROM activity a
+		<include refid="activityJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="Activity">
+        SELECT
+        <include refid="activityColumns"/>
+        FROM activity a
+		<include refid="activityJoins"/>
+		WHERE 1 = 1
+		<if test="name != null and name != ''">
+			AND a.name like CONCAT('%', #{name}, '%')
+		</if>
+		<if test="ass != null and ass.id != null and ass.id != ''">
+			AND a.ass_id = #{ass.id}
+		</if>
+		ORDER BY a.status, a.start_time desc
+		LIMIT ${(page.pageNo - 1) * page.pageSize}, ${page.pageSize}
+	</select>
+
+    <select id="activityList" resultType="Activity">
+        SELECT
+        <include refid="activityColumns"/>
+        FROM activity a
+		<include refid="activityJoins"/>
+		WHERE a.status = '3'
+		ORDER BY a.start_time desc
+		LIMIT ${(index - 1) * 30}, 30
+	</select>
+
+	<select id="countWxList"  resultType="java.lang.Integer">
+        SELECT count(*) FROM activity a
+		WHERE status = '3'
+	</select>
+
+	<select id="count"  resultType="java.lang.Integer">
+        SELECT count(*) FROM activity a
+		WHERE 1 = 1
+		<if test="name != null and name != ''">
+			AND a.name like CONCAT('%', #{name}, '%')
+		</if>
+		<if test="ass != null and ass.id != null and ass.id != ''">
+			AND a.ass_id = #{ass.id}
+		</if>
+    </select>
+
+    <select id="findAllList" resultType="Activity">
+        SELECT
+        <include refid="activityColumns"/>
+        FROM activity a
+		<include refid="activityJoins"/>
+    </select>
+
+    <select id="checkList" resultType="Activity">
+        SELECT
+        <include refid="activityColumns"/>
+        FROM activity a
+		<include refid="activityJoins"/>
+		WHERE a.status = '2'
+    </select>
+
+    <insert id="insert">
+		INSERT INTO activity(
+			id,
+            name,
+		    ass_id,
+		    content,
+		    start_time,
+		    status
+		) VALUES (
+			#{id},
+			#{name},
+			#{ass.id},
+			#{content},
+			#{startTime},
+			#{status}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE activity SET
+			name = #{name},
+			ass_id = #{ass.id},
+			content = #{content},
+			start_time = #{startTime},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+
+
+    <update id="delete">
+        DELETE FROM activity
+        WHERE id = #{id}
+    </update>
+</mapper>
